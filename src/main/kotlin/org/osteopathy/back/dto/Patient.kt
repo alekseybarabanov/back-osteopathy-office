@@ -1,14 +1,8 @@
-package org.osteopathy.back.entities
-import jakarta.persistence.*
-import java.sql.Timestamp
-import java.util.Date
+package org.osteopathy.back.dto
 
-@Entity
-@Table(name="patient")
+
 class Patient {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null
 
     var firstName: String? = null
@@ -21,20 +15,16 @@ class Patient {
 
     var description: String? = null
 
-    @OneToMany
-    @JoinColumn(name = "visit_id")
-    var visits: List<Visit>? = null
+    var currentVisit: Visit? = null
+
+    var visits: MutableList<Visit>? = null
 }
 
-@Entity
-@Table(name="visit")
-class Visit {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+class Visit {
     var id: Long? = null
 
-    var visitDate: Timestamp = Timestamp(Date().time)
+    var visitDate: String? = null
 
     var complaints: String? = null
     var anamnesis: String? = null
