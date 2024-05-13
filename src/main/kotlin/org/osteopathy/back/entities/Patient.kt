@@ -19,6 +19,8 @@ class Patient {
 
     var phone: String? = null
 
+    var birthDate: String? = null
+
     var description: String? = null
 
     @OneToMany

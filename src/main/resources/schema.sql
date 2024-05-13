@@ -5,6 +5,7 @@ create table patient (
     last_name varchar(255),
     middle_name varchar(255),
     phone varchar(255),
+    birth_date varchar(255),
     primary key (id)
 )
 create table visit (
