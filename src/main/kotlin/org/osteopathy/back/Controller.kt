@@ -12,9 +12,10 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 @RestController
-class Controller(private val patientRepository: PatientRepository,
-private val visitRepository: VisitRepository,
-private val sessionFactory: SessionFactory,
+class Controller(
+    private val patientRepository: PatientRepository,
+    private val visitRepository: VisitRepository,
+    private val sessionFactory: SessionFactory,
     private val mapper: PatientMapper
 ) {
 
@@ -36,7 +37,7 @@ private val sessionFactory: SessionFactory,
         if (patient.id == null) {
             throw IllegalArgumentException("cannot update patient without id")
         }
-        if (patient.currentVisit != null ) {
+        if (patient.currentVisit != null) {
             if (patient.visits == null) {
                 patient.visits = Collections.singletonList(patient.currentVisit)
             } else {
@@ -67,6 +68,11 @@ private val sessionFactory: SessionFactory,
         val result = ArrayList<Patient>()
         result.addAll(patientRepository.findByFirstNameOrMiddleNameOrLastName(name))
 
-        return result.map{ mapper.entityToDto(it) }
+        return result.map { mapper.entityToDto(it) }
+    }
+
+    @GetMapping("/api/patient/latest")
+    fun latestPatients(): List<org.osteopathy.back.dto.Patient> {
+        return patientRepository.latestPatients().map { mapper.entityToDto(it) }
     }
 }
