@@ -1,5 +1,7 @@
 package org.osteopathy.back.dto
 
+import java.time.LocalDateTime
+
 
 class Patient {
 
@@ -16,6 +18,8 @@ class Patient {
     var birthDate: String? = null
 
     var description: String? = null
+
+    var nextVisit: LocalDateTime? = null
 
     var currentVisit: Visit? = null
 

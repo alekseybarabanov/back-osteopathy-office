@@ -23,6 +23,8 @@ class Patient {
 
     var description: String? = null
 
+    var nextVisit: Timestamp? = null
+
     @OneToMany
     @JoinColumn(name = "visit_id")
     var visits: List<Visit>? = null

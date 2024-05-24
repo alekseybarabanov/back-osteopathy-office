@@ -6,6 +6,7 @@ create table patient (
     middle_name varchar(255),
     phone varchar(255),
     birth_date varchar(255),
+    next_visit timestamp(6),
     primary key (id)
 )
 create table visit (
