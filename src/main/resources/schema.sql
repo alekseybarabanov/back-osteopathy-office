@@ -13,8 +13,8 @@ create table visit (
      id bigint not null,
      visit_date timestamp(6),
      visit_id bigint,
-     anamnesis varchar(255),
-     complaints varchar(255),
+     anamnesis varchar(4000),
+     complaints varchar(4000),
      glob_bio integer,
      glob_neiro_postural integer,
      glob_neiro_psihosomat integer,
@@ -48,11 +48,11 @@ create table visit (
      regionc7th1vistz integer,
      regionl2l5som integer,
      regionl2l5vistz integer,
-     dominant varchar(255),
-     local_disfunction varchar(255),
-     recommendations varchar(255),
-     specialists varchar(255),
-     treatment_plan varchar(255),
+     dominant varchar(4000),
+     local_disfunction varchar(4000),
+     recommendations varchar(4000),
+     specialists varchar(4000),
+     treatment_plan varchar(4000),
      primary key (id)
  )
 alter table if exists visit

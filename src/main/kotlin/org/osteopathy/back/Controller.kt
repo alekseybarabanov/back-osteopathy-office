@@ -37,17 +37,25 @@ class Controller(
         if (patient.id == null) {
             throw IllegalArgumentException("cannot update patient without id")
         }
-        if (patient.currentVisit != null) {
-            if (patient.visits == null) {
-                patient.visits = Collections.singletonList(patient.currentVisit)
-            } else {
-                if (patient.currentVisit!!.id == null) {
-                    patient.visits!!.add(patient.currentVisit!!)
+        kotlin.runCatching {
+            if (patient.currentVisit != null) {
+                if (patient.visits == null || patient.visits!!.size < 1) {
+                    patient.visits = Collections.singletonList(patient.currentVisit)
                 } else {
-                    val ind = patient.visits!!.indexOfFirst { it.id == patient.currentVisit!!.id }
-                    patient.visits!![ind] = patient.currentVisit!!
+                    if (patient.currentVisit!!.id == null) {
+                        patient.visits!!.add(patient.currentVisit!!)
+                    } else {
+                        val ind = patient.visits!!.indexOfFirst { it.id == patient.currentVisit!!.id }
+                        if (ind < 0) {
+                            patient.visits!!.add(patient.currentVisit!!)
+                        } else {
+                            patient.visits!![ind] = patient.currentVisit!!
+                        }
+                    }
                 }
             }
+        }.onFailure {
+            println(patient.id)
         }
         val entityPatient = mapper.dtoToEntity(patient)
         entityPatient.visits?.forEach { visitRepository.save(it) }
