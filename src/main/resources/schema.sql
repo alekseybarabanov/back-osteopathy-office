@@ -8,7 +8,7 @@ create table patient (
     birth_date varchar(255),
     next_visit timestamp(6),
     primary key (id)
-)
+);
 create table visit (
      id bigint not null,
      visit_date timestamp(6),
@@ -54,8 +54,15 @@ create table visit (
      specialists varchar(4000),
      treatment_plan varchar(4000),
      primary key (id)
- )
+ );
 alter table if exists visit
    add constraint FKk33uqa3qd4lj5gsps1bbv3s13
    foreign key (visit_id)
-   references patient
+   references patient;
+
+create table audit (
+    id bigint not null,
+    tm timestamp,
+    rec_type varchar(30),
+    patient_id bigint,
+);

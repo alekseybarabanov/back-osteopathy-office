@@ -1,22 +1,18 @@
 package org.osteopathy.back
 
-import org.hibernate.SessionFactory
-import org.osteopathy.back.dto.Visit
 import org.osteopathy.back.entities.Patient
 import org.osteopathy.back.mapper.PatientMapper
 import org.osteopathy.back.repositories.PatientRepository
-import org.osteopathy.back.repositories.VisitRepository
+import org.osteopathy.back.repositories.PatientService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 @RestController
 class Controller(
     private val patientRepository: PatientRepository,
-    private val visitRepository: VisitRepository,
-    private val sessionFactory: SessionFactory,
-    private val mapper: PatientMapper
+    private val mapper: PatientMapper,
+    private val patientService: PatientService
 ) {
 
     @PostMapping("/api/patient", consumes = [MediaType.APPLICATION_JSON_VALUE])
@@ -25,9 +21,7 @@ class Controller(
             throw IllegalArgumentException("cannot add patient with existing id")
         }
         val entityPatient = mapper.dtoToEntity(patient)
-        entityPatient.visits?.forEach { visitRepository.save(it) }
-        patientRepository.save(entityPatient)
-        patient.id = entityPatient.id
+        patient.id = patientService.createPatient(entityPatient)
 
         return mapper.entityToDto(entityPatient)
     }
@@ -58,15 +52,14 @@ class Controller(
             println(patient.id)
         }
         val entityPatient = mapper.dtoToEntity(patient)
-        entityPatient.visits?.forEach { visitRepository.save(it) }
-        patientRepository.save(entityPatient)
+        patientService.updatePatient(entityPatient)
 
         return mapper.entityToDto(entityPatient)
     }
 
     @GetMapping("/api/patient/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getPatient(@PathVariable("id") id: Long): org.osteopathy.back.dto.Patient {
-        val entityPatient = patientRepository.findById(id).orElseThrow { IllegalArgumentException("Invalid id: $id") }
+        val entityPatient = patientService.readPatient(id, true)
 
         return mapper.entityToDto(entityPatient)
     }
@@ -81,6 +74,7 @@ class Controller(
 
     @GetMapping("/api/patient/latest")
     fun latestPatients(): List<org.osteopathy.back.dto.Patient> {
-        return patientRepository.latestPatients().map { mapper.entityToDto(it) }
+        return patientService.latestPatients().map { mapper.entityToDto(it) }
     }
+
 }

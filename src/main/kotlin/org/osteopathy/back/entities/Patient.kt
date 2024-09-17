@@ -1,6 +1,7 @@
 package org.osteopathy.back.entities
 import jakarta.persistence.*
 import java.sql.Timestamp
+import java.time.OffsetDateTime
 import java.util.Date
 
 @Entity
@@ -80,4 +81,20 @@ class Visit {
     var treatmentPlan: String? = null
     var recommendations: String? = null
     var specialists: String? = null
+}
+
+@Entity
+@Table(name="audit")
+class Audit {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    var id: Long? = null
+
+    var tm: OffsetDateTime = OffsetDateTime.now()
+
+    var reqType: String? = null
+
+    var patientId: Long? = null
+
 }
