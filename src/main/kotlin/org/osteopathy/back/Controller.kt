@@ -15,7 +15,7 @@ class Controller(
     private val patientService: PatientService
 ) {
 
-    @PostMapping("/api/patient", consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/{contextpath}/api/patient", consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun addPatient(@RequestBody patient: org.osteopathy.back.dto.Patient): org.osteopathy.back.dto.Patient? {
         if (patient.id != null) {
             throw IllegalArgumentException("cannot add patient with existing id")
@@ -26,7 +26,7 @@ class Controller(
         return mapper.entityToDto(entityPatient)
     }
 
-    @PutMapping("/api/patient", consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/{contextpath}/api/patient", consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun updatePatient(@RequestBody patient: org.osteopathy.back.dto.Patient): org.osteopathy.back.dto.Patient? {
         if (patient.id == null) {
             throw IllegalArgumentException("cannot update patient without id")
@@ -57,14 +57,14 @@ class Controller(
         return mapper.entityToDto(entityPatient)
     }
 
-    @GetMapping("/api/patient/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/{contextpath}/api/patient/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getPatient(@PathVariable("id") id: Long): org.osteopathy.back.dto.Patient {
         val entityPatient = patientService.readPatient(id, true)
 
         return mapper.entityToDto(entityPatient)
     }
 
-    @GetMapping("/api/patient/search")
+    @GetMapping("/{contextpath}/api/patient/search")
     fun findByName(@RequestParam("name") name: String): List<org.osteopathy.back.dto.Patient> {
         val result = ArrayList<Patient>()
         result.addAll(patientRepository.findByFirstNameOrMiddleNameOrLastName(name))
@@ -72,8 +72,9 @@ class Controller(
         return result.map { mapper.entityToDto(it) }
     }
 
-    @GetMapping("/api/patient/latest")
-    fun latestPatients(): List<org.osteopathy.back.dto.Patient> {
+    @GetMapping("/{contextpath}/api/patient/latest")
+    fun latestPatients(@PathVariable("contextpath") cp: String): List<org.osteopathy.back.dto.Patient> {
+	println("contextpath: $cp")
         return patientService.latestPatients().map { mapper.entityToDto(it) }
     }
 
