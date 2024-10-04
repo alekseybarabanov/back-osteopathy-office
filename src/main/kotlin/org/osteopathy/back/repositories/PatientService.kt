@@ -58,7 +58,7 @@ class PatientServiceImpl(
                 it.middleName = rs[ind++] as String?
                 it.phone = rs[ind++] as String?
                 it.birthDate = rs[ind++] as String?
-                it.nextVisit = rs[ind++] as Timestamp
+                it.nextVisit = rs[ind++] as Timestamp?
 
                 it
             }
