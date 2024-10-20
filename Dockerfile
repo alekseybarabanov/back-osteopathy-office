@@ -1,3 +1,12 @@
+FROM maven:amazoncorretto AS build
+
+RUN mkdir /src
+COPY . /src
+
+WORKDIR /src
+
+RUN mvn package
+
 FROM amazoncorretto:17.0.7-alpine
 
 ARG APPLICATION_USER=appuser
@@ -11,7 +20,7 @@ RUN mkdir /app/h2 && \
 
 USER 1000
 
-COPY --chown=1000:1000 ./target/back-0.0.1-SNAPSHOT.jar /app/app.jar
+COPY --from=build --chown=1000:1000 /src/target/back-0.0.1-SNAPSHOT.jar /app/app.jar
 WORKDIR /app
 
 EXPOSE 80
