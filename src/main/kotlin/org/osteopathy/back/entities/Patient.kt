@@ -9,8 +9,9 @@ import java.util.Date
 class Patient {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long? = null
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patient_id_seq")
+    @SequenceGenerator(name="patient_id_seq", sequenceName = "patient_id_seq", allocationSize = 1)
+    var id: Int? = null
 
     var firstName: String? = null
 
@@ -36,8 +37,9 @@ class Patient {
 class Visit {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long? = null
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "visit_id_seq")
+    @SequenceGenerator(name="visit_id_seq", sequenceName = "visit_id_seq", allocationSize = 1)
+    var id: Int? = null
 
     var visitDate: Timestamp = Timestamp(Date().time)
 
@@ -88,13 +90,14 @@ class Visit {
 class Audit {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long? = null
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "audit_id_seq")
+    @SequenceGenerator(name="audit_id_seq", sequenceName = "audit_id_seq", allocationSize = 1)
+    var id: Int? = null
 
     var tm: OffsetDateTime = OffsetDateTime.now()
 
-    var reqType: String? = null
+    var recType: String? = null
 
-    var patientId: Long? = null
+    var patientId: Int? = null
 
 }

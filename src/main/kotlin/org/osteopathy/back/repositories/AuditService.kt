@@ -8,8 +8,8 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 interface AuditService {
-    fun enterPatient(pid: Long)
-    fun createPatient(pid: Long)
+    fun enterPatient(pid: Int)
+    fun createPatient(pid: Int)
 }
 
 @Service
@@ -26,17 +26,17 @@ class AuditServiceImpl(
     }
 
     @Transactional
-    override fun enterPatient(pid: Long) {
+    override fun enterPatient(pid: Int) {
         audit.save(Audit().apply {
-            reqType = "create"
+            recType = "create"
             patientId = pid
         })
     }
 
     @Transactional
-    override fun createPatient(pid: Long) {
+    override fun createPatient(pid: Int) {
         audit.save(Audit().apply {
-            reqType = "create"
+            recType = "create"
             patientId = pid
         })
     }

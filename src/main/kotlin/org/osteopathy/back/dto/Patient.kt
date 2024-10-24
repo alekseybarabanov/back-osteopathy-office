@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 class Patient {
 
-    var id: Long? = null
+    var id: Int? = null
 
     var firstName: String? = null
 
