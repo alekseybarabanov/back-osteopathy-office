@@ -13,8 +13,8 @@ import java.time.OffsetDateTime
 
 @Repository
 interface PatientRepository : CrudRepository<Patient, Long> {
-    @Query("SELECT t FROM Patient t where t.firstName like '%' || ?1 || '%' OR t.lastName like '%' || ?1 || '%' OR t.middleName like '%' || ?1 || '%'")
-    fun findByFirstNameOrMiddleNameOrLastName(name: String): List<Patient>
+    @Query("SELECT t FROM Patient t where t.tenant = ?2 AND t.firstName like '%' || ?1 || '%' OR t.lastName like '%' || ?1 || '%' OR t.middleName like '%' || ?1 || '%'")
+    fun findByFirstNameOrMiddleNameOrLastName(name: String, tenant: String?): List<Patient>
 }
 
 @Repository

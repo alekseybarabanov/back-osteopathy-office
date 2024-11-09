@@ -16,18 +16,18 @@ class Controller(
 ) {
 
     @PostMapping("/{contextpath}/api/patient", consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun addPatient(@RequestBody patient: org.osteopathy.back.dto.Patient): org.osteopathy.back.dto.Patient? {
+    fun addPatient(@RequestBody patient: org.osteopathy.back.dto.Patient, @PathVariable("contextpath") tenant: String): org.osteopathy.back.dto.Patient? {
         if (patient.id != null) {
             throw IllegalArgumentException("cannot add patient with existing id")
         }
         val entityPatient = mapper.dtoToEntity(patient)
-        patient.id = patientService.createPatient(entityPatient)
+        patient.id = patientService.createPatient(entityPatient, tenant)
 
         return mapper.entityToDto(entityPatient)
     }
 
     @PutMapping("/{contextpath}/api/patient", consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun updatePatient(@RequestBody patient: org.osteopathy.back.dto.Patient): org.osteopathy.back.dto.Patient? {
+    fun updatePatient(@RequestBody patient: org.osteopathy.back.dto.Patient, @PathVariable("contextpath") tenant: String): org.osteopathy.back.dto.Patient? {
         if (patient.id == null) {
             throw IllegalArgumentException("cannot update patient without id")
         }
@@ -52,30 +52,29 @@ class Controller(
             println(patient.id)
         }
         val entityPatient = mapper.dtoToEntity(patient)
-        patientService.updatePatient(entityPatient)
+        patientService.updatePatient(entityPatient, tenant)
 
         return mapper.entityToDto(entityPatient)
     }
 
     @GetMapping("/{contextpath}/api/patient/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getPatient(@PathVariable("id") id: Long): org.osteopathy.back.dto.Patient {
-        val entityPatient = patientService.readPatient(id, true)
+    fun getPatient(@PathVariable("id") id: Long, @PathVariable("contextpath") tenant: String): org.osteopathy.back.dto.Patient {
+        val entityPatient = patientService.readPatient(id, true, tenant)
 
         return mapper.entityToDto(entityPatient)
     }
 
     @GetMapping("/{contextpath}/api/patient/search")
-    fun findByName(@RequestParam("name") name: String): List<org.osteopathy.back.dto.Patient> {
+    fun findByName(@RequestParam("name") name: String, @PathVariable("contextpath") tenant: String): List<org.osteopathy.back.dto.Patient> {
         val result = ArrayList<Patient>()
-        result.addAll(patientRepository.findByFirstNameOrMiddleNameOrLastName(name))
+        result.addAll(patientRepository.findByFirstNameOrMiddleNameOrLastName(name, tenant))
 
         return result.map { mapper.entityToDto(it) }
     }
 
     @GetMapping("/{contextpath}/api/patient/latest")
-    fun latestPatients(@PathVariable("contextpath") cp: String): List<org.osteopathy.back.dto.Patient> {
-	println("contextpath: $cp")
-        return patientService.latestPatients().map { mapper.entityToDto(it) }
+    fun latestPatients(@PathVariable("contextpath") tenant: String): List<org.osteopathy.back.dto.Patient> {
+        return patientService.latestPatients(tenant).map { mapper.entityToDto(it) }
     }
 
 }

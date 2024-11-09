@@ -13,6 +13,8 @@ class Patient {
     @SequenceGenerator(name="patient_id_seq", sequenceName = "patient_id_seq", allocationSize = 1)
     var id: Int? = null
 
+    var tenant: String? = null
+
     var firstName: String? = null
 
     var lastName: String? = null
@@ -40,6 +42,8 @@ class Visit {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "visit_id_seq")
     @SequenceGenerator(name="visit_id_seq", sequenceName = "visit_id_seq", allocationSize = 1)
     var id: Int? = null
+
+    var tenant: String? = null
 
     var visitDate: Timestamp = Timestamp(Date().time)
 
@@ -93,6 +97,8 @@ class Audit {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "audit_id_seq")
     @SequenceGenerator(name="audit_id_seq", sequenceName = "audit_id_seq", allocationSize = 1)
     var id: Int? = null
+
+    var tenant: String? = null
 
     var tm: OffsetDateTime = OffsetDateTime.now()
 

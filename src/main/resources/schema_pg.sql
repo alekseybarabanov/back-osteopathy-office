@@ -1,5 +1,6 @@
 create table patient (
     id  serial primary key,
+    tenant TEXT,
     description TEXT,
     first_name TEXT,
     last_name TEXT,
@@ -10,6 +11,7 @@ create table patient (
 );
 create table visit (
      id  serial primary key,
+     tenant TEXT,
      visit_date timestamp(6),
      visit_id bigint,
      anamnesis TEXT,
@@ -60,6 +62,7 @@ alter table if exists visit
 
 create table audit (
     id  serial primary key,
+    tenant TEXT,
     tm timestamp,
     rec_type TEXT,
     patient_id bigint

@@ -7,6 +7,8 @@ class Patient {
 
     var id: Int? = null
 
+    var tenant: String? = null
+
     var firstName: String? = null
 
     var lastName: String? = null
@@ -29,6 +31,8 @@ class Patient {
 
 class Visit {
     var id: Long? = null
+
+    var tenant: String? = null
 
     var visitDate: String? = null
 
