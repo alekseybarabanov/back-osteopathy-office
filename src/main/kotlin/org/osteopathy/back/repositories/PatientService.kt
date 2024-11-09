@@ -98,14 +98,11 @@ class PgPatientService(
     val em: EntityManager
 ): AbstractPatientService(patientRepository, visitRepository, audit, em) {
     override fun latestPatientsQuery(tenant: String?): Query {
-        val query = em.createNativeQuery("select p.id, p.tenant, p.description, p.first_name, p.last_name, " +
+        return em.createNativeQuery("select p.id, p.tenant, p.description, p.first_name, p.last_name, " +
                 "p.middle_name, p.phone, p.birth_date, p.next_visit " +
                 "from (select patient_id as pid, max(id) as id " +
-                "from Audit where tenant = ? group by patient_id order by id desc limit 10) a " +
-                "join patient p on a.pid = p.id order by a.id desc")
-        query.setParameter(0, tenant)
-
-        return query
+                "from Audit where tenant = :tenant group by patient_id order by id desc limit 10) a " +
+                "join patient p on a.pid = p.id order by a.id desc").setParameter("tenant", tenant)
     }
 
 }
