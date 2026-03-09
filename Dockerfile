@@ -1,4 +1,4 @@
-FROM maven:3.9-amazoncorretto-17 AS build
+FROM maven:3.9-amazoncorretto-25 AS build
 
 RUN mkdir /src
 COPY . /src
@@ -7,7 +7,7 @@ WORKDIR /src
 
 RUN mvn package
 
-FROM amazoncorretto:17.0.7-alpine
+FROM amazoncorretto:25-alpine
 
 ARG APPLICATION_USER=appuser
 RUN adduser -u 1000 -D $APPLICATION_USER
