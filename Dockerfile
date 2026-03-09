@@ -1,4 +1,4 @@
-FROM maven:amazoncorretto AS build
+FROM maven:3.9-amazoncorretto-17 AS build
 
 RUN mkdir /src
 COPY . /src
