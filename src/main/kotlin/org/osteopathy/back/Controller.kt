@@ -66,8 +66,14 @@ class Controller(
 
     @GetMapping("/{contextpath}/api/patient/search")
     fun findByName(@RequestParam("name") name: String, @PathVariable("contextpath") tenant: String): List<org.osteopathy.back.dto.Patient> {
-        val result = ArrayList<Patient>()
-        result.addAll(patientRepository.findByFirstNameOrMiddleNameOrLastName(name, tenant))
+        val words = name.trim().split("\\s+".toRegex()).filter { it.isNotBlank() }
+        if (words.isEmpty()) return emptyList()
+
+        val result = if (words.size == 1) {
+            patientRepository.findByFirstNameOrMiddleNameOrLastName(words[0], tenant)
+        } else {
+            patientRepository.findByNameWords(words[0], words[1], tenant)
+        }
 
         return result.map { mapper.entityToDto(it) }
     }
