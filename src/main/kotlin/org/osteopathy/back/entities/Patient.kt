@@ -57,6 +57,7 @@ class Visit {
     var globNeiroPostural: Int? = null
     var regionHeadStruct: Int? = null
     var regionNeckStruct: Int? = null
+    var regionNeckStructDetails: String? = null
     var regionNeckVistz: Int? = null
     var regionHandsStruct: Int? = null
     var regionBrestStruct: Int? = null

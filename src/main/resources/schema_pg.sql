@@ -32,6 +32,7 @@ create table visit (
      region_lower_back_struct integer,
      region_lower_back_vistz integer,
      region_neck_struct integer,
+     region_neck_struct_details TEXT,
      region_neck_vistz integer,
      region_pelvic_struct integer,
      region_pelvic_vistz integer,
