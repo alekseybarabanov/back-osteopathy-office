@@ -61,8 +61,10 @@ class Visit {
     var regionNeckVistz: Int? = null
     var regionHandsStruct: Int? = null
     var regionBrestStruct: Int? = null
+    var regionBrestStructDetails: String? = null
     var regionBrestVistz: Int? = null
     var regionLowerBackStruct: Int? = null
+    var regionLowerBackStructDetails: String? = null
     var regionLowerBackVistz: Int? = null
     var regionPelvicStruct: Int? = null
     var regionPelvicVistz: Int? = null

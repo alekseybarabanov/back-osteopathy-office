@@ -34,21 +34,24 @@ class DatabaseMigration(private val dataSource: DataSource) : InitializingBean {
 
     override fun afterPropertiesSet() {
         dataSource.connection.use { conn ->
-            val hasColumn = conn.metaData
-                .getColumns(null, null, "VISIT", "REGION_NECK_STRUCT_DETAILS")
-                .use { it.next() }
-                || conn.metaData
-                .getColumns(null, null, "visit", "region_neck_struct_details")
-                .use { it.next() }
+            val columns = listOf("region_neck_struct_details", "region_brest_struct_details", "region_lower_back_struct_details")
+            for (column in columns) {
+                val hasColumn = conn.metaData
+                    .getColumns(null, null, "VISIT", column.uppercase())
+                    .use { it.next() }
+                    || conn.metaData
+                    .getColumns(null, null, "visit", column)
+                    .use { it.next() }
 
-            if (!hasColumn) {
-                log.info("Migration: adding region_neck_struct_details column to visit table")
-                conn.createStatement().use { stmt ->
-                    stmt.execute("ALTER TABLE visit ADD COLUMN region_neck_struct_details VARCHAR(255)")
+                if (!hasColumn) {
+                    log.info("Migration: adding $column column to visit table")
+                    conn.createStatement().use { stmt ->
+                        stmt.execute("ALTER TABLE visit ADD COLUMN $column VARCHAR(255)")
+                    }
+                    log.info("Migration: $column column added successfully")
+                } else {
+                    log.info("Migration: $column column already exists, skipping")
                 }
-                log.info("Migration: column added successfully")
-            } else {
-                log.info("Migration: region_neck_struct_details column already exists, skipping")
             }
         }
     }
